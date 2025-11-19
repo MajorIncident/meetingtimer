@@ -40,3 +40,7 @@ describe("InfoCard", () => {
 ```
 
 Every new feature should include tests covering success paths and edge cases. Use mocks sparingly—prefer real React interactions and deterministic helper inputs.
+
+## Domain logic examples
+- Pure calculation helpers (e.g., `tests/lib/meetingCost.test.ts`) should validate edge cases and accumulation math without touching React or the DOM.
+- Mirror this pattern for future business rules: import the helper directly, assert on return values, and avoid side effects.

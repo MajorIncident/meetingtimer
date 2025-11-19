@@ -17,6 +17,14 @@ The Meeting Cost Timer is intentionally small but explicit so AI and human contr
 - The meeting cost engine will evolve inside `src/lib/meetingCost.ts` (or a future folder) to calculate elapsed time, role-based rates, and aggregated totals.
 - Keep functions pure: receive inputs, return outputs, and avoid accessing the DOM or timers directly.
 
+### Domain logic layer
+- Roles and default rates live in `src/lib/rolesConfig.ts`.
+- Cost calculations and snapshots live in `src/lib/meetingCost.ts`, with wrappers that use the default roles.
+- How to extend:
+  - Add new roles or descriptions in `rolesConfig.ts` to surface different attendee types.
+  - Swap in alternate rate schemes by passing a different roles array to `calculateCostPerSecond`/`updateMeetingCost`.
+  - Keep additional business helpers pure and colocated in `src/lib` with matching tests under `tests/lib`.
+
 ## State Management (Future)
 - Initial state will rely on local React state and custom hooks.
 - When multiple components need the same data (e.g., timer + chart), introduce a React context provider or a lightweight state library such as Zustand.
