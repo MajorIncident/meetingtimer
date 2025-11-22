@@ -1,3 +1,5 @@
+"use client";
+
 import { CostDisplay } from "@/components/CostDisplay";
 import { RoleControls } from "@/components/RoleControls";
 import { TimerControls } from "@/components/TimerControls";
