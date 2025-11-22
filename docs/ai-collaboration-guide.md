@@ -24,6 +24,8 @@ New timer features should follow the pattern: keep domain math in `src/lib`, hol
 5. **Wire state**: Use React hooks or context in the route file; avoid spreading state through unrelated components.
 6. **Validate**: Run `npm test`, `npm run lint`, and (if styles changed) take a screenshot for the PR.
 
+When adding new visualizations, prefer reusing existing hook outputs (like `history` from `useMeetingTimer`) instead of recalculating cost logic in components. Extend tests for both the data contract and the UI wiring when possible.
+
 ## How to write and run tests
 - Use Vitest with React Testing Library. Tests live entirely in `/tests` and mirror the `src` tree.
 - Import components via the `@/*` alias.

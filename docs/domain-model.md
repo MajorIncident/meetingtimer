@@ -27,6 +27,15 @@ Also defined in [`src/lib/meetingCost.ts`](../src/lib/meetingCost.ts). Captures 
 - `totalCost`: Total currency accrued so far.
 - `costPerSecond`: Current rate based on the latest `RoleCounts`.
 
+### Cost History
+Defined in [`src/hooks/useMeetingTimer.ts`](../src/hooks/useMeetingTimer.ts) as `CostHistoryPoint`.
+
+- `elapsedSeconds`: Total seconds when the sample was taken.
+- `totalCost`: Cumulative cost at that moment.
+- `costPerSecond`: Burn rate for the same tick.
+
+The hook stores a sliding window of recent points (not a full audit log) so the UI can render a lightweight graph without persisting every tick for the entire meeting.
+
 ## Cost Per Second Calculation
 1. For each role, multiply `hourlyRate * roleCounts[role.id]` (treat missing counts as zero).
 2. Sum the hourly totals across roles.

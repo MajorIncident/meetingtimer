@@ -27,7 +27,9 @@ The Meeting Cost Timer is intentionally small but explicit so AI and human contr
 
 ### Hooks and UI layer
 - `src/hooks/useMeetingTimer.ts` bridges the domain layer and UI by managing timer ticking, role counts, and cost snapshots.
+- `src/hooks/useMeetingTimer.ts` also exposes a lightweight `history` array so UI elements can draw recent trends without redoing business math.
 - `src/components/MeetingTimerShell.tsx` composes the primary experience from presentational pieces like the timer, cost, role controls, and transport controls.
+- `src/components/MiniCostGraph.tsx` renders the recent history as a compact inline chart. For richer analytics, keep logic in `src/lib` and extend hook outputs rather than duplicating calculations.
 - UI components rely on hooks for stateful behavior while leaving cost math inside `src/lib`.
 
 ## State Management (Future)
