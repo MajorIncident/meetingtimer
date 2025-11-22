@@ -25,6 +25,11 @@ The Meeting Cost Timer is intentionally small but explicit so AI and human contr
   - Swap in alternate rate schemes by passing a different roles array to `calculateCostPerSecond`/`updateMeetingCost`.
   - Keep additional business helpers pure and colocated in `src/lib` with matching tests under `tests/lib`.
 
+### Hooks and UI layer
+- `src/hooks/useMeetingTimer.ts` bridges the domain layer and UI by managing timer ticking, role counts, and cost snapshots.
+- `src/components/MeetingTimerShell.tsx` composes the primary experience from presentational pieces like the timer, cost, role controls, and transport controls.
+- UI components rely on hooks for stateful behavior while leaving cost math inside `src/lib`.
+
 ## State Management (Future)
 - Initial state will rely on local React state and custom hooks.
 - When multiple components need the same data (e.g., timer + chart), introduce a React context provider or a lightweight state library such as Zustand.

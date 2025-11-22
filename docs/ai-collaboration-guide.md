@@ -6,7 +6,10 @@ This repository is designed for autonomous and semi-autonomous agents. Use this 
 1. Skim `README.md` for goals, then read `docs/architecture.md` for structure.
 2. Inspect `src/app/page.tsx` to see the current UI surface.
 3. Browse `src/lib` for business logic entry points (currently `meetingCost.ts`).
+4. Jump to `src/hooks/useMeetingTimer.ts` and `src/components/MeetingTimerShell.tsx` to see how the timer UI consumes the domain layer.
 4. Review `tests/` for available helpers and testing style.
+
+New timer features should follow the pattern: keep domain math in `src/lib`, hold stateful behavior in hooks, and present it through components.
 
 ## Where to add new components
 - Create UI primitives in `src/components` and export them from the same file.
