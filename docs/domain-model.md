@@ -36,6 +36,16 @@ Defined in [`src/hooks/useMeetingTimer.ts`](../src/hooks/useMeetingTimer.ts) as 
 
 The hook stores a sliding window of recent points (not a full audit log) so the UI can render a lightweight graph without persisting every tick for the entire meeting.
 
+### Meeting Summary Export
+Defined in [`src/lib/meetingSummary.ts`](../src/lib/meetingSummary.ts) and used when the user downloads a JSON snapshot.
+
+- `generatedAt`: ISO timestamp for when the export was created.
+- `totalSeconds`, `totalCost`, `costPerSecond`: Copied directly from the live snapshot.
+- `attendees`: For each role, captures `roleId`, `roleLabel`, `hourlyRate`, `count`, and an `estimatedCostShare` based on hourly rate × count proportions.
+- `history?`: Optional recent `CostHistoryPoint` array plus a note explaining that it is a sliding window, not a full audit log.
+
+This structure is intentionally self-describing so it can be shared with stakeholders or ingested by tooling (including AI workflows) without extra context.
+
 ## Cost Per Second Calculation
 1. For each role, multiply `hourlyRate * roleCounts[role.id]` (treat missing counts as zero).
 2. Sum the hourly totals across roles.
