@@ -14,6 +14,10 @@ import { defaultMeetingRoles } from "@/lib/rolesConfig";
  * The hook encapsulates the interval ticking logic and delegates cost math to
  * the domain helpers in `src/lib/meetingCost.ts`.
  *
+ * `CostHistoryPoint` captures a lightweight snapshot of the timer and cost at
+ * a given second. The hook maintains a recent sliding window of points (not a
+ * full audit log) to support compact visualizations.
+ *
  * Usage example:
  * ```tsx
  * const {
@@ -21,6 +25,7 @@ import { defaultMeetingRoles } from "@/lib/rolesConfig";
  *   totalCost,
  *   isRunning,
  *   roleCounts,
+ *   history,
  *   start,
  *   pause,
  *   reset,
@@ -28,6 +33,14 @@ import { defaultMeetingRoles } from "@/lib/rolesConfig";
  * } = useMeetingTimer();
  * ```
  */
+export interface CostHistoryPoint {
+  /** Total elapsed time in seconds when this sample was recorded. */
+  elapsedSeconds: number;
+  /** Cumulative cost at that moment. */
+  totalCost: number;
+  /** Active burn rate in currency per second. */
+  costPerSecond: number;
+}
 export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
   const resolvedInitialCounts = useMemo(() => {
     const zeros = Object.fromEntries(
@@ -42,6 +55,7 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
   );
   const [isRunning, setIsRunning] = useState(false);
   const [roleCounts, setRoleCounts] = useState<RoleCounts>(resolvedInitialCounts);
+  const [history, setHistory] = useState<CostHistoryPoint[]>([]);
   const roleCountsRef = useRef<RoleCounts>(resolvedInitialCounts);
 
   useEffect(() => {
@@ -52,9 +66,26 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     if (!isRunning) return undefined;
 
     const interval = setInterval(() => {
-      setSnapshot((previous) =>
-        updateMeetingCostWithDefaults(previous, 1, roleCountsRef.current),
-      );
+      setSnapshot((previous) => {
+        const nextSnapshot = updateMeetingCostWithDefaults(
+          previous,
+          1,
+          roleCountsRef.current,
+        );
+
+        const nextPoint: CostHistoryPoint = {
+          elapsedSeconds: nextSnapshot.totalSeconds,
+          totalCost: nextSnapshot.totalCost,
+          costPerSecond: nextSnapshot.costPerSecond,
+        };
+
+        setHistory((prev) => {
+          const next = [...prev, nextPoint];
+          return next.length > 300 ? next.slice(next.length - 300) : next;
+        });
+
+        return nextSnapshot;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
@@ -66,6 +97,8 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     // Reset time and cost while leaving attendee counts untouched for convenience.
     setIsRunning(false);
     setSnapshot(createEmptySnapshot());
+    // Clear recent history so the graph reflects the fresh start.
+    setHistory([]);
   };
 
   const setRoleCount = (roleId: string, count: number) => {
@@ -93,6 +126,7 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     snapshot,
     isRunning,
     roleCounts,
+    history,
     totalSeconds: snapshot.totalSeconds,
     totalCost: snapshot.totalCost,
     costPerSecond: snapshot.costPerSecond,
