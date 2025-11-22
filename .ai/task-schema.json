@@ -1,0 +1,87 @@
+{
+  "description": "Schema for AI coding tasks for this repo.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "goal",
+    "context",
+    "changes",
+    "verification"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Short stable identifier for the task."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable summary of the task."
+    },
+    "goal": {
+      "type": "string",
+      "description": "High-level description of what success looks like."
+    },
+    "context": {
+      "type": "object",
+      "description": "Key background info to avoid re-discovery.",
+      "properties": {
+        "relatedDocs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Paths to relevant docs that the AI should read."
+        },
+        "relatedCode": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key modules or files likely involved in this task."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any extra hints or constraints for this repo."
+        }
+      }
+    },
+    "changes": {
+      "type": "object",
+      "description": "What code/doc changes are requested.",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Plain-language description of changes."
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Bullet list of criteria that must be met."
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "How to verify the task is complete.",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Commands to run (e.g., tests, lint)."
+        },
+        "manualChecks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Manual checks (e.g., 'Start timer, verify cost increases')."
+        }
+      }
+    }
+  }
+}

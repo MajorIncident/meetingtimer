@@ -1,0 +1,63 @@
+{
+  "domain": {
+    "description": "Pure business logic for meeting roles and cost calculation.",
+    "keyFiles": [
+      "src/lib/rolesConfig.ts",
+      "src/lib/meetingCost.ts"
+    ],
+    "notes": "Keep business rules centralized here; avoid duplicating cost math in UI components. Add domain tests under tests/lib."
+  },
+  "state": {
+    "description": "React state hooks bridging domain logic to the UI.",
+    "keyFiles": [
+      "src/hooks/useMeetingTimer.ts"
+    ],
+    "notes": "Extend hooks instead of embedding ad-hoc state inside components."
+  },
+  "ui": {
+    "description": "Presentational components and layout for the meeting timer experience.",
+    "keyFiles": [
+      "src/components/MeetingTimerShell.tsx",
+      "src/components/CostDisplay.tsx",
+      "src/components/MiniCostGraph.tsx",
+      "src/components/RoleControls.tsx",
+      "src/components/TimerControls.tsx",
+      "src/components/TimerDisplay.tsx"
+    ],
+    "notes": "Consume state from hooks and domain utilities; avoid re-implementing logic in components."
+  },
+  "tests": {
+    "description": "Vitest suites covering domain and UI behaviors.",
+    "keyFiles": [
+      "tests/lib/meetingCost.test.ts",
+      "tests/components/MeetingTimerShell.test.tsx",
+      "tests/components/CostDisplay.test.tsx",
+      "tests/setup.ts"
+    ],
+    "notes": "Add or update tests alongside code changes to keep coverage aligned with business rules."
+  },
+  "docs": {
+    "description": "Human-oriented documentation for architecture, domain modeling, testing, and AI collaboration.",
+    "keyFiles": [
+      "docs/architecture.md",
+      "docs/domain-model.md",
+      "docs/testing-strategy.md",
+      "docs/tasks-playbook.md",
+      "docs/ai-collaboration-guide.md"
+    ],
+    "notes": "Review docs before larger refactors to stay aligned with conventions."
+  },
+  "config": {
+    "description": "Tooling and project configuration for Next.js, linting, and styling.",
+    "keyFiles": [
+      "package.json",
+      "tsconfig.json",
+      "vitest.config.ts",
+      "next.config.ts",
+      "eslint.config.mjs",
+      "prettier.config.mjs",
+      "postcss.config.mjs"
+    ],
+    "notes": "Ensure new scripts or tooling align with existing config."
+  }
+}
