@@ -11,6 +11,11 @@ This repository is designed for autonomous and semi-autonomous agents. Use this 
 
 New timer features should follow the pattern: keep domain math in `src/lib`, hold stateful behavior in hooks, and present it through components.
 
+## AI Navigation Shortcut
+- Read `.ai/repo-map.json` for a fast overview of where domain, state, UI, tests, and docs live.
+- Use `.ai/task-schema.json` as the contract for structured tasks when generating or consuming machine-readable requests.
+- Browse `.ai/tasks/examples/` to mirror existing patterns when drafting new tasks for automation.
+
 ## Where to add new components
 - Create UI primitives in `src/components` and export them from the same file.
 - Co-locate stories or usage notes via comments; visual references should go into PR descriptions with screenshots.

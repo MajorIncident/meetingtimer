@@ -1,0 +1,31 @@
+{
+  "id": "add-new-role-type",
+  "title": "Add default Consultant role",
+  "goal": "Introduce a new default role (Consultant) with a defined hourly rate and ensure cost calculations and docs cover it.",
+  "context": {
+    "relatedDocs": [
+      "docs/domain-model.md"
+    ],
+    "relatedCode": [
+      "src/lib/rolesConfig.ts",
+      "tests/lib/meetingCost.test.ts"
+    ],
+    "notes": "Add the role to the default configuration and keep tests aligned with the new rate."
+  },
+  "changes": {
+    "summary": "Add a Consultant role with a sensible hourly rate, document it, and update cost tests.",
+    "acceptanceCriteria": [
+      "rolesConfig includes Consultant with the intended hourly rate",
+      "domain model doc mentions the new role",
+      "meetingCost tests include coverage for Consultant rate and calculations"
+    ]
+  },
+  "verification": {
+    "commands": [
+      "npm test"
+    ],
+    "manualChecks": [
+      "Review roles display to ensure Consultant appears in defaults if rendered"
+    ]
+  }
+}

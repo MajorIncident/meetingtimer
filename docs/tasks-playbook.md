@@ -29,6 +29,10 @@ Testing: <Commands to run or checks to add>
 >
 > Missing clarity on files, scope, and validation steps.
 
+## Structured JSON Tasks for Automation
+- For automation and advanced AI agents, see `.ai/task-schema.json` and `.ai/tasks/examples/` for structured task formats.
+- Human authors can choose to write tasks in prose (this doc) or as JSON objects matching the schema.
+
 ## Tips
 - Mention whether the change is backend logic, UI, or both.
 - Call out any dependencies on API keys or environment variables.

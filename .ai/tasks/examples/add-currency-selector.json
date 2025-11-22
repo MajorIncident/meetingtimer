@@ -1,0 +1,32 @@
+{
+  "id": "add-currency-selector",
+  "title": "Add currency selector for cost display",
+  "goal": "Allow users to switch displayed currency (e.g., USD/EUR) without altering underlying calculations.",
+  "context": {
+    "relatedDocs": [
+      "docs/architecture.md"
+    ],
+    "relatedCode": [
+      "src/components/CostDisplay.tsx",
+      "src/components/MeetingTimerShell.tsx"
+    ],
+    "notes": "Formatting-only change; keep domain numbers untouched and derive symbol/label in UI state."
+  },
+  "changes": {
+    "summary": "Add a simple currency selector control and adjust cost formatting to show the chosen currency symbol.",
+    "acceptanceCriteria": [
+      "MeetingTimerShell includes a selector to toggle currency option",
+      "CostDisplay renders amounts with the selected currency symbol",
+      "UI tests cover currency toggling and formatted output"
+    ]
+  },
+  "verification": {
+    "commands": [
+      "npm test",
+      "npm run lint"
+    ],
+    "manualChecks": [
+      "Start the app and confirm switching currency updates displayed symbol without changing numeric totals"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "add-export-summary",
+  "title": "Add download summary button",
+  "goal": "Enable users to download a JSON summary of meeting duration, total cost, and per-role breakdown from the client side.",
+  "context": {
+    "relatedDocs": [
+      "docs/domain-model.md"
+    ],
+    "relatedCode": [
+      "src/hooks/useMeetingTimer.ts",
+      "src/components/MeetingTimerShell.tsx"
+    ],
+    "notes": "Leverage existing timer state to build the export payload; no backend support is required."
+  },
+  "changes": {
+    "summary": "Add a UI control to trigger a JSON download of meeting metrics and ensure the exported structure mirrors the domain model.",
+    "acceptanceCriteria": [
+      "MeetingTimerShell exposes a button to download the summary JSON",
+      "useMeetingTimer provides the data needed for the export (time, total cost, per-role costs)",
+      "Tests cover the exported payload shape and triggering logic"
+    ]
+  },
+  "verification": {
+    "commands": [
+      "npm test",
+      "npm run lint"
+    ],
+    "manualChecks": [
+      "Run the app, start/stop a timer, and confirm the downloaded JSON matches on-screen values"
+    ]
+  }
+}
