@@ -14,6 +14,7 @@ import { defaultMeetingRoles } from "@/lib/rolesConfig";
 
 export function MeetingTimerShell() {
   const {
+    snapshot,
     totalSeconds,
     totalCost,
     costPerSecond,
