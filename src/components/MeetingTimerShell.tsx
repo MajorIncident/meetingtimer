@@ -6,6 +6,10 @@ import { RoleControls } from "@/components/RoleControls";
 import { TimerControls } from "@/components/TimerControls";
 import { TimerDisplay } from "@/components/TimerDisplay";
 import { type CostHistoryPoint, useMeetingTimer } from "@/hooks/useMeetingTimer";
+import {
+  buildMeetingSummaryWithDefaults,
+  downloadMeetingSummary,
+} from "@/lib/meetingSummary";
 import { defaultMeetingRoles } from "@/lib/rolesConfig";
 
 export function MeetingTimerShell() {
@@ -23,6 +27,11 @@ export function MeetingTimerShell() {
     decrementRole,
   } = useMeetingTimer();
   const costHistory: CostHistoryPoint[] = history;
+
+  const handleDownloadSummary = () => {
+    const summary = buildMeetingSummaryWithDefaults(snapshot, roleCounts, history);
+    downloadMeetingSummary(summary);
+  };
 
   return (
     <section className="w-full max-w-5xl rounded-2xl border border-white/60 bg-white/90 p-8 shadow-[0_20px_50px_-40px_rgba(0,0,0,0.8)] backdrop-blur">
@@ -63,12 +72,21 @@ export function MeetingTimerShell() {
         </div>
 
         <div className="pt-2">
-          <TimerControls
-            isRunning={isRunning}
-            onStart={start}
-            onPause={pause}
-            onReset={reset}
-          />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <TimerControls
+              isRunning={isRunning}
+              onStart={start}
+              onPause={pause}
+              onReset={reset}
+            />
+            <button
+              type="button"
+              onClick={handleDownloadSummary}
+              className="inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+            >
+              Download summary
+            </button>
+          </div>
         </div>
       </div>
     </section>
