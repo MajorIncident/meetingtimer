@@ -20,17 +20,24 @@ export function MeetingTimerShell() {
     costPerSecond,
     isRunning,
     roleCounts,
+    roleRates,
     history,
     start,
     pause,
     reset,
     incrementRole,
     decrementRole,
+    setRoleRate,
   } = useMeetingTimer();
   const costHistory: CostHistoryPoint[] = history;
 
   const handleDownloadSummary = () => {
-    const summary = buildMeetingSummaryWithDefaults(snapshot, roleCounts, history);
+    const summary = buildMeetingSummaryWithDefaults(
+      snapshot,
+      roleCounts,
+      history,
+      roleRates,
+    );
     downloadMeetingSummary(summary);
   };
 
@@ -62,8 +69,10 @@ export function MeetingTimerShell() {
           <RoleControls
             roles={defaultMeetingRoles}
             roleCounts={roleCounts}
+            roleRates={roleRates}
             onIncrement={incrementRole}
             onDecrement={decrementRole}
+            onRateChange={setRoleRate}
           />
         </div>
 

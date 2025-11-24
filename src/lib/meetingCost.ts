@@ -1,4 +1,9 @@
-import { defaultMeetingRoles, type MeetingRole } from "./rolesConfig";
+import {
+  applyRoleRateOverrides,
+  defaultMeetingRoles,
+  type MeetingRole,
+  type RoleRateOverrides,
+} from "./rolesConfig";
 
 export type RoleCounts = Record<string, number>;
 
@@ -48,8 +53,10 @@ export function calculateCostPerSecond(
  */
 export function calculateCostPerSecondWithDefaults(
   roleCounts: RoleCounts,
+  roleRates?: RoleRateOverrides,
 ): number {
-  return calculateCostPerSecond(roleCounts, defaultMeetingRoles);
+  const roles = applyRoleRateOverrides(defaultMeetingRoles, roleRates);
+  return calculateCostPerSecond(roleCounts, roles);
 }
 
 /**
@@ -99,12 +106,15 @@ export function updateMeetingCostWithDefaults(
   previous: MeetingCostSnapshot,
   secondsElapsed: number,
   roleCounts: RoleCounts,
+  roleRates?: RoleRateOverrides,
 ): MeetingCostSnapshot {
+  const roles = applyRoleRateOverrides(defaultMeetingRoles, roleRates);
+
   return updateMeetingCost(
     previous,
     secondsElapsed,
     roleCounts,
-    defaultMeetingRoles,
+    roles,
   );
 }
 

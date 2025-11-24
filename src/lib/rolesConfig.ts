@@ -9,6 +9,8 @@ export interface MeetingRole {
   description?: string;
 }
 
+export type RoleRateOverrides = Record<string, number>;
+
 /**
  * Default roles used by the Meeting Cost Timer. These can be surfaced in the UI
  * for selection, and future tasks may allow editing or expanding the list.
@@ -36,6 +38,18 @@ export const defaultMeetingRoles: ReadonlyArray<MeetingRole> = [
     description: "Engineers, designers, analysts, or other makers executing tasks.",
   },
 ] as const;
+
+export function applyRoleRateOverrides(
+  roles: ReadonlyArray<MeetingRole>,
+  overrides?: RoleRateOverrides,
+): ReadonlyArray<MeetingRole> {
+  if (!overrides) return roles;
+
+  return roles.map((role) => ({
+    ...role,
+    hourlyRate: overrides[role.id] ?? role.hourlyRate,
+  }));
+}
 
 /**
  * Lookup helper to grab a role definition by its id. Returns undefined when a

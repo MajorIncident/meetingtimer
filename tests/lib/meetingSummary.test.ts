@@ -82,4 +82,23 @@ describe("buildMeetingSummaryWithDefaults", () => {
     const leader = summary.attendees.find((attendee) => attendee.roleId === "senior_leader");
     expect(leader?.count).toBe(1);
   });
+
+  it("applies rate overrides to attendees", () => {
+    const snapshot = {
+      totalSeconds: 10,
+      totalCost: 5,
+      costPerSecond: 0.5,
+    };
+    const roleCounts = { leader_manager: 1 };
+
+    const summary = buildMeetingSummaryWithDefaults(snapshot, roleCounts, undefined, {
+      leader_manager: 75,
+    });
+
+    const manager = summary.attendees.find(
+      (attendee) => attendee.roleId === "leader_manager",
+    );
+
+    expect(manager?.hourlyRate).toBe(75);
+  });
 });
