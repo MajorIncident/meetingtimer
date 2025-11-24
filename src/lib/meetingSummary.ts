@@ -3,7 +3,12 @@ import {
   type MeetingCostSnapshot,
   type RoleCounts,
 } from "@/lib/meetingCost";
-import { defaultMeetingRoles, type MeetingRole } from "@/lib/rolesConfig";
+import {
+  applyRoleRateOverrides,
+  defaultMeetingRoles,
+  type MeetingRole,
+  type RoleRateOverrides,
+} from "@/lib/rolesConfig";
 
 /**
  * A lightweight, self-describing snapshot of a meeting session intended for
@@ -124,8 +129,11 @@ export function buildMeetingSummaryWithDefaults(
   snapshot: MeetingCostSnapshot,
   roleCounts: RoleCounts,
   history?: CostHistoryPoint[],
+  roleRates?: RoleRateOverrides,
 ): MeetingSummary {
-  return buildMeetingSummary(snapshot, roleCounts, defaultMeetingRoles, history);
+  const roles = applyRoleRateOverrides(defaultMeetingRoles, roleRates);
+
+  return buildMeetingSummary(snapshot, roleCounts, roles, history);
 }
 
 /**

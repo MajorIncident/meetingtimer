@@ -52,7 +52,7 @@ This structure is intentionally self-describing so it can be shared with stakeho
 3. Convert to seconds: `hourlyTotal / 3600`.
 4. If no attendees are present, the result is `0`.
 
-This logic is implemented in `calculateCostPerSecond` with a convenience `calculateCostPerSecondWithDefaults` that uses `defaultMeetingRoles`.
+This logic is implemented in `calculateCostPerSecond` with a convenience `calculateCostPerSecondWithDefaults` that uses `defaultMeetingRoles` (optionally applying per-role rate overrides for the current session).
 
 ## Accumulating Total Cost
 `updateMeetingCost` evolves a `MeetingCostSnapshot` by:
@@ -60,7 +60,7 @@ This logic is implemented in `calculateCostPerSecond` with a convenience `calcul
 2. Adding `secondsElapsed` to `totalSeconds`.
 3. Incrementing `totalCost` by `costPerSecond * secondsElapsed`.
 
-`createEmptySnapshot` returns a zeroed starting point, and `updateMeetingCostWithDefaults` applies the default role catalog.
+`createEmptySnapshot` returns a zeroed starting point, and `updateMeetingCostWithDefaults` applies the default role catalog (and any in-memory rate overrides).
 
 ## Using in the UI
 A React component can store a `MeetingCostSnapshot` in state and update it on a timer tick:
@@ -71,14 +71,20 @@ const [snapshot, setSnapshot] = useState(createEmptySnapshot());
 useEffect(() => {
   const interval = setInterval(() => {
     setSnapshot((prev) =>
-      updateMeetingCostWithDefaults(prev, 1, currentRoleCounts),
+      updateMeetingCostWithDefaults(
+        prev,
+        1,
+        currentRoleCounts,
+        currentRoleRates,
+      ),
     );
   }, 1000);
   return () => clearInterval(interval);
-}, [currentRoleCounts]);
+}, [currentRoleCounts, currentRoleRates]);
 ```
 
 - `currentRoleCounts` should reflect the attendee mix at each tick.
+- `currentRoleRates` holds any temporary rate overrides per role.
 - `costPerSecond` shows the live burn rate; `totalCost` shows the cumulative spend.
 
 ## Notes for AI Agents

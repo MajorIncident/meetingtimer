@@ -48,6 +48,17 @@ describe("calculateCostPerSecond", () => {
   });
 });
 
+describe("calculateCostPerSecondWithDefaults", () => {
+  it("respects role rate overrides", () => {
+    const perSecond = calculateCostPerSecondWithDefaults(
+      { senior_leader: 1 },
+      { senior_leader: 100 },
+    );
+
+    expect(perSecond).toBeCloseTo(100 / 3600);
+  });
+});
+
 describe("updateMeetingCost", () => {
   // If nothing changes, the snapshot should remain at zero values.
   it("returns an untouched snapshot when nothing has elapsed", () => {
@@ -96,5 +107,20 @@ describe("updateMeetingCost", () => {
     expect(secondTick.totalCost).toBeCloseTo(
       expectedFirstCost + expectedSecondCost,
     );
+  });
+
+  it("applies overridden rates while updating snapshots", () => {
+    const snapshot = createEmptySnapshot();
+    const roleCounts: RoleCounts = { leader_manager: 1 };
+
+    const overridden = updateMeetingCostWithDefaults(
+      snapshot,
+      60,
+      roleCounts,
+      { leader_manager: 90 },
+    );
+
+    expect(overridden.costPerSecond).toBeCloseTo(90 / 3600);
+    expect(overridden.totalCost).toBeCloseTo((90 / 3600) * 60);
   });
 });

@@ -6,7 +6,7 @@ import {
   type RoleCounts,
   updateMeetingCostWithDefaults,
 } from "@/lib/meetingCost";
-import { defaultMeetingRoles } from "@/lib/rolesConfig";
+import { defaultMeetingRoles, type RoleRateOverrides } from "@/lib/rolesConfig";
 
 /**
  * React hook that keeps the meeting timer, role counts, and cost snapshot in sync.
@@ -50,17 +50,31 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     return { ...zeros, ...(initialRoleCounts ?? {}) } satisfies RoleCounts;
   }, [initialRoleCounts]);
 
+  const resolvedInitialRates = useMemo<RoleRateOverrides>(() => {
+    return Object.fromEntries(
+      defaultMeetingRoles.map((role) => [role.id, role.hourlyRate]),
+    );
+  }, []);
+
   const [snapshot, setSnapshot] = useState<MeetingCostSnapshot>(
     createEmptySnapshot(),
   );
   const [isRunning, setIsRunning] = useState(false);
   const [roleCounts, setRoleCounts] = useState<RoleCounts>(resolvedInitialCounts);
+  const [roleRates, setRoleRates] = useState<RoleRateOverrides>(
+    resolvedInitialRates,
+  );
   const [history, setHistory] = useState<CostHistoryPoint[]>([]);
   const roleCountsRef = useRef<RoleCounts>(resolvedInitialCounts);
+  const roleRatesRef = useRef<RoleRateOverrides>(resolvedInitialRates);
 
   useEffect(() => {
     roleCountsRef.current = roleCounts;
   }, [roleCounts]);
+
+  useEffect(() => {
+    roleRatesRef.current = roleRates;
+  }, [roleRates]);
 
   useEffect(() => {
     if (!isRunning) return undefined;
@@ -71,6 +85,7 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
           previous,
           1,
           roleCountsRef.current,
+          roleRatesRef.current,
         );
 
         const nextPoint: CostHistoryPoint = {
@@ -122,10 +137,36 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     setRoleCount(roleId, Math.max(0, nextCount));
   };
 
+  const setRoleRate = (roleId: string, hourlyRate: number) => {
+    const sanitizedRate = Number.isFinite(hourlyRate)
+      ? Math.max(0, hourlyRate)
+      : 0;
+
+    setRoleRates((current) => ({
+      ...current,
+      [roleId]: sanitizedRate,
+    }));
+
+    roleRatesRef.current = {
+      ...roleRatesRef.current,
+      [roleId]: sanitizedRate,
+    };
+
+    setSnapshot((previous) =>
+      updateMeetingCostWithDefaults(
+        previous,
+        0,
+        roleCountsRef.current,
+        roleRatesRef.current,
+      ),
+    );
+  };
+
   return {
     snapshot,
     isRunning,
     roleCounts,
+    roleRates,
     history,
     totalSeconds: snapshot.totalSeconds,
     totalCost: snapshot.totalCost,
@@ -136,5 +177,6 @@ export function useMeetingTimer(initialRoleCounts?: RoleCounts) {
     incrementRole,
     decrementRole,
     setRoleCount,
+    setRoleRate,
   } as const;
 }
