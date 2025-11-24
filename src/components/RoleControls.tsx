@@ -23,6 +23,7 @@ export function RoleControls({
       {roles.map((role) => {
         const count = roleCounts[role.id] ?? 0;
         const rate = roleRates[role.id] ?? role.hourlyRate;
+        const isCustomRate = rate !== role.hourlyRate;
 
         return (
           <div
@@ -49,6 +50,19 @@ export function RoleControls({
                 />
                 <span className="text-[11px] text-slate-500">/hr</span>
               </div>
+              {isCustomRate ? (
+                <div className="flex items-center gap-1 rounded-full border border-slate-100/80 bg-slate-50 px-2.5 py-1 text-[11px] text-slate-500 shadow-inner">
+                  <span className="whitespace-nowrap">Default ${role.hourlyRate}/hr</span>
+                  <button
+                    type="button"
+                    aria-label={`Reset ${role.label} rate to default`}
+                    onClick={() => onRateChange(role.id, role.hourlyRate)}
+                    className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-medium text-slate-600 transition hover:border-indigo-200 hover:text-indigo-600"
+                  >
+                    Reset
+                  </button>
+                </div>
+              ) : null}
               <button
                 type="button"
                 aria-label={`Remove ${role.label}`}
