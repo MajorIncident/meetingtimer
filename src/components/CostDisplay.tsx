@@ -10,6 +10,8 @@ function formatCurrency(amount: number) {
 export function CostDisplay({ totalCost, costPerSecond }: CostDisplayProps) {
   const perSecondLabel = `${formatCurrency(costPerSecond)} / sec`;
   const perMinuteLabel = `${formatCurrency(costPerSecond * 60)} / min`;
+  const perHourLabel = `${formatCurrency(costPerSecond * 3600)} / hr`;
+  const perYearLabel = `${formatCurrency(costPerSecond * 3600 * 24 * 365)} / yr`;
 
   return (
     <div className="rounded-xl bg-white px-6 py-4 text-center shadow-sm ring-1 ring-slate-100">
@@ -19,7 +21,7 @@ export function CostDisplay({ totalCost, costPerSecond }: CostDisplayProps) {
       </p>
       <p className="mt-2 text-sm text-slate-600">
         Current Rate: <span className="font-medium text-slate-800">{perSecondLabel}</span>
-        <span className="ml-2 text-slate-400">({perMinuteLabel})</span>
+        <span className="ml-2 text-slate-400">({perMinuteLabel} · {perHourLabel} · {perYearLabel})</span>
       </p>
     </div>
   );
