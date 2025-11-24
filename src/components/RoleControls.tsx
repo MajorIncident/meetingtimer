@@ -33,9 +33,9 @@ export function RoleControls({
               <span className="text-sm font-medium text-slate-900">{role.label}</span>
               <span className="text-xs text-slate-500">{role.description}</span>
             </div>
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-700">
-                <span className="text-[11px] uppercase tracking-wide text-slate-500">Rate</span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 rounded-full border border-slate-100/80 bg-white px-3 py-1.5 text-xs text-slate-700 shadow-sm">
+                <span className="text-[11px] lowercase tracking-[0.08em] text-slate-500">rate</span>
                 <input
                   type="number"
                   min={0}
@@ -45,10 +45,10 @@ export function RoleControls({
                   onChange={(event) =>
                     onRateChange(role.id, Number(event.target.value))
                   }
-                  className="w-20 rounded border border-slate-200 bg-white px-2 py-1 text-right text-sm font-semibold text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-200"
+                  className="w-20 rounded-full border border-transparent bg-slate-50 px-3 py-1 text-right text-sm font-medium text-slate-600 shadow-inner focus:border-indigo-200 focus:outline-none focus:ring-1 focus:ring-indigo-100"
                 />
                 <span className="text-[11px] text-slate-500">/hr</span>
-              </label>
+              </div>
               <button
                 type="button"
                 aria-label={`Remove ${role.label}`}
