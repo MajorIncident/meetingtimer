@@ -28,13 +28,13 @@ export function RoleControls({
         return (
           <div
             key={role.id}
-            className="flex items-center justify-between rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-sm"
+            className="flex flex-col gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="flex flex-col text-left">
               <span className="text-sm font-medium text-slate-900">{role.label}</span>
               <span className="text-xs text-slate-500">{role.description}</span>
             </div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 self-start sm:self-auto">
               <div className="flex items-center gap-2 rounded-full border border-slate-100/80 bg-white px-3 py-1.5 text-xs text-slate-700 shadow-sm">
                 <span className="text-[11px] lowercase tracking-[0.08em] text-slate-500">rate</span>
                 <input
