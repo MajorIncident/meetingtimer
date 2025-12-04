@@ -8,10 +8,11 @@ function formatCurrency(amount: number) {
 }
 
 export function CostDisplay({ totalCost, costPerSecond }: CostDisplayProps) {
+  const WORKING_SECONDS_PER_YEAR = 40 * 52 * 3600;
   const perSecondLabel = `${formatCurrency(costPerSecond)} / sec`;
   const perMinuteLabel = `${formatCurrency(costPerSecond * 60)} / min`;
   const perHourLabel = `${formatCurrency(costPerSecond * 3600)} / hr`;
-  const perYearLabel = `${formatCurrency(costPerSecond * 3600 * 24 * 365)} / yr`;
+  const perYearLabel = `${formatCurrency(costPerSecond * WORKING_SECONDS_PER_YEAR)} / yr`;
 
   return (
     <div className="rounded-xl bg-white px-6 py-4 text-center shadow-sm ring-1 ring-slate-100">
