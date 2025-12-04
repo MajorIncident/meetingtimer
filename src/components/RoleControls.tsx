@@ -28,14 +28,14 @@ export function RoleControls({
         return (
           <div
             key={role.id}
-            className="flex flex-col gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-sm"
           >
             <div className="flex flex-col text-left">
               <span className="text-sm font-medium text-slate-900">{role.label}</span>
               <span className="text-xs text-slate-500">{role.description}</span>
             </div>
-            <div className="flex w-full flex-col gap-2 self-start sm:w-auto sm:self-auto">
-              <div className="flex items-center gap-2.5 sm:self-auto">
+            <div className="flex w-full flex-col gap-2 self-start">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <div className="flex items-center gap-3 rounded-full border border-slate-100/80 bg-white px-3.5 py-2 text-sm text-slate-700 shadow-sm">
                   <span className="text-[12px] lowercase tracking-[0.08em] text-slate-500">rate</span>
                   <div className="flex items-center rounded-full border border-transparent bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-700 shadow-inner focus-within:border-indigo-200 focus-within:outline-none focus-within:ring-1 focus-within:ring-indigo-100">
@@ -55,6 +55,8 @@ export function RoleControls({
                   </div>
                   <span className="text-[12px] text-slate-500">/hr</span>
                 </div>
+              </div>
+              <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   aria-label={`Remove ${role.label}`}
