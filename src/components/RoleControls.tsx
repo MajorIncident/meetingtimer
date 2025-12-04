@@ -35,20 +35,24 @@ export function RoleControls({
               <span className="text-xs text-slate-500">{role.description}</span>
             </div>
             <div className="flex items-center gap-2.5 self-start sm:self-auto">
-              <div className="flex items-center gap-2 rounded-full border border-slate-100/80 bg-white px-3 py-1.5 text-xs text-slate-700 shadow-sm">
-                <span className="text-[11px] lowercase tracking-[0.08em] text-slate-500">rate</span>
-                <input
-                  type="number"
-                  min={0}
-                  inputMode="decimal"
-                  aria-label={`${role.label} hourly rate`}
-                  value={rate}
-                  onChange={(event) =>
-                    onRateChange(role.id, Number(event.target.value))
-                  }
-                  className="w-20 rounded-full border border-transparent bg-slate-50 px-3 py-1 text-right text-sm font-medium text-slate-600 shadow-inner focus:border-indigo-200 focus:outline-none focus:ring-1 focus:ring-indigo-100"
-                />
-                <span className="text-[11px] text-slate-500">/hr</span>
+              <div className="flex items-center gap-3 rounded-full border border-slate-100/80 bg-white px-3.5 py-2 text-sm text-slate-700 shadow-sm">
+                <span className="text-[12px] lowercase tracking-[0.08em] text-slate-500">rate</span>
+                <div className="flex items-center rounded-full border border-transparent bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-700 shadow-inner focus-within:border-indigo-200 focus-within:outline-none focus-within:ring-1 focus-within:ring-indigo-100">
+                  <span aria-hidden="true" className="pr-1 text-slate-400">$</span>
+                  <input
+                    type="number"
+                    min={0}
+                    step={10}
+                    inputMode="decimal"
+                    aria-label={`${role.label} hourly rate in dollars`}
+                    value={rate}
+                    onChange={(event) =>
+                      onRateChange(role.id, Number(event.target.value))
+                    }
+                    className="w-24 bg-transparent text-right text-sm font-semibold text-slate-700 focus:outline-none"
+                  />
+                </div>
+                <span className="text-[12px] text-slate-500">/hr</span>
               </div>
               {isCustomRate ? (
                 <div className="flex items-center gap-1 rounded-full border border-slate-100/80 bg-slate-50 px-2.5 py-1 text-[11px] text-slate-500 shadow-inner">
